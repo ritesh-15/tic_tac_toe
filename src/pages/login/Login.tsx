@@ -3,7 +3,8 @@ import { useFormik } from "formik";
 import { loginSchema } from "../../validation/authenticationSchema";
 import { Button, FormField } from "../../components";
 import { Link } from "react-router-dom";
-
+import { useMutation } from "react-query";
+import { loginApi } from "../../api/auth";
 interface ILogin {
   password: string;
   username: string;
@@ -15,10 +16,21 @@ const useLogin = () => {
     username: "",
   };
 
+  const loginMutation = useMutation(loginApi, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error, d, c) => {
+      // @ts-ignore
+      console.log(error.response.data);
+      // TODO handle error
+    },
+  });
+
   const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues,
     onSubmit: (values) => {
-      // TODO handle login logic
+      loginMutation.mutate(values);
     },
     validationSchema: loginSchema,
   });

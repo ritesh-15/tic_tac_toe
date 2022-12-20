@@ -15,8 +15,8 @@ const Button: FC<IProps> = (props) => {
     <button
       className={`px-2 py-3 rounded-md w-full flex items-center cursor-pointer ${props.className}`}
     >
-      <div className="mr-2">{icon}</div>
-      <p>{label}</p>
+      {icon && <div className="mr-2">{icon}</div>}
+      <p className="text-center w-full">{label}</p>
     </button>
   );
 };
