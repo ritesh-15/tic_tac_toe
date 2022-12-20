@@ -47,14 +47,12 @@ class AuthController {
 
       // generate cookies
       res.cookie("access_token", accessToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: true,
+        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
       });
 
       res.cookie("refresh_token", refreshToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: true,
+        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
       });
 
@@ -115,12 +113,14 @@ class AuthController {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         secure: true,
         httpOnly: true,
+        sameSite: "none",
       });
 
       res.cookie("refresh_token", refreshToken, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         secure: true,
         httpOnly: true,
+        sameSite: "none",
       });
 
       return res.json({
@@ -199,12 +199,14 @@ class AuthController {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         secure: true,
         httpOnly: true,
+        sameSite: "none",
       });
 
       res.cookie("refresh_token", refreshToken, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         secure: true,
         httpOnly: true,
+        sameSite: "none",
       });
 
       return res.json({

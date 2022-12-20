@@ -12,15 +12,15 @@ import { authRouter } from "../routes";
 export const initServer = (app: Application) => {
   // middlewares
   app.use(json({ limit: "10mb" }));
-  app.use(cors(corsOptions));
   app.use(cookieParser());
+  app.use(cors(corsOptions));
   app.use(helmet());
   app.use(morgan("dev"));
 
   app.use("/api", apiLimiter);
 
   // routes
-  app.use("/api", authRateLimiter, authRouter);
+  app.use("/api/auth", authRateLimiter, authRouter);
 
   // handle the unplemented route
   app.use((req: Request, res: Response, next: NextFunction) => {
