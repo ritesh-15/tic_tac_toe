@@ -28,11 +28,11 @@ const authenticate = async (
 
     req.user = new UserDto(user);
 
-    next();
+    return next();
   } catch (err) {
     // @ts-ignore
     logger.error(err);
-    next(
+    return next(
       HttpError.unauthorized("You are not authorized to access this resource")
     );
   }

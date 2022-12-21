@@ -7,13 +7,13 @@ import { corsOptions } from "./cors_config";
 import { apiLimiter, authRateLimiter } from "./rate_limit";
 import morgan from "morgan";
 import helmet from "helmet";
-import { authRouter } from "../routes";
+import { authRouter, gameRouter } from "../routes";
 
 export const initServer = (app: Application) => {
   // middlewares
-  app.use(json({ limit: "10mb" }));
   app.use(cookieParser());
   app.use(cors(corsOptions));
+  app.use(json({ limit: "100mb" }));
   app.use(helmet());
   app.use(morgan("dev"));
 
@@ -21,6 +21,7 @@ export const initServer = (app: Application) => {
 
   // routes
   app.use("/api/auth", authRateLimiter, authRouter);
+  app.use("/api/game", gameRouter);
 
   // handle the unplemented route
   app.use((req: Request, res: Response, next: NextFunction) => {

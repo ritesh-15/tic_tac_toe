@@ -9,5 +9,6 @@ export const connection = async () => {
     // @ts-ignore
     await Prisma.client.$disconnect();
     logger.error(err);
+    process.exit(1);
   }
 };

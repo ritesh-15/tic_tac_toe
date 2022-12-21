@@ -3,6 +3,7 @@ import { initServer } from "./init_server";
 import logger from "./logger";
 import { authRateLimiter, apiLimiter } from "./rate_limit";
 import { connection } from "./db";
+import cookieOption from "./cookie_options";
 
 export {
   corsOptions,
@@ -11,4 +12,5 @@ export {
   authRateLimiter,
   apiLimiter,
   connection,
+  cookieOption,
 };

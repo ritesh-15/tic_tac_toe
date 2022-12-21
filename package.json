@@ -22,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "prisma": "^4.7.1",
+    "socket.io": "^4.5.4",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
     "zod": "^3.20.2"

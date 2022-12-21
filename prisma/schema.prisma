@@ -20,7 +20,6 @@ model User {
   createdGames Game[]   @relation(name: "creatorToId")
   joinedGames  Game[]   @relation(name: "opponent")
   winnedGames  Game[]   @relation(name: "winner")
-  turns        Game[]   @relation(name: "turn")
 }
 
 model Token {
@@ -33,17 +32,16 @@ model Token {
 }
 
 model Game {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  creatorId  String   @db.ObjectId
-  creator    User     @relation(fields: [creatorId], references: [id], name: "creatorToId")
-  opponentId String   @db.ObjectId
-  opponent   User     @relation(fields: [opponentId], references: [id], name: "opponent")
-  board      Json
-  winnerId   String?  @db.ObjectId
-  winner     User?    @relation(fields: [winnerId], references: [id], name: "winner")
-  isFinished Boolean  @default(false)
-  turnId     String?  @db.ObjectId
-  turn       User?    @relation(fields: [turnId], name: "turn", references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  creatorId      String   @db.ObjectId
+  creator        User     @relation(fields: [creatorId], references: [id], name: "creatorToId")
+  opponentId     String   @db.ObjectId
+  opponent       User     @relation(fields: [opponentId], references: [id], name: "opponent")
+  board          Json
+  winnerId       String?  @db.ObjectId
+  winner         User?    @relation(fields: [winnerId], references: [id], name: "winner")
+  isFinished     Boolean  @default(false)
+  isOpponentTurn Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

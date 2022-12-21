@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { logger } from "../config";
+import { cookieOption, logger } from "../config";
 import UserService from "../services/user.service";
 import HttpError from "../utils/HttpError";
 import bcrypt from "bcrypt";
@@ -31,9 +31,7 @@ class AuthController {
 
       if (!isValidPassword)
         return next(
-          HttpError.unauthorized(
-            "Invalid username or password, please try again."
-          )
+          HttpError.forbidden("Invalid username or password, please try again.")
         );
 
       // generate the tokens
@@ -46,15 +44,9 @@ class AuthController {
       });
 
       // generate cookies
-      res.cookie("access_token", accessToken, {
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-      });
+      res.cookie("access_token", accessToken, cookieOption);
 
-      res.cookie("refresh_token", refreshToken, {
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-      });
+      res.cookie("refresh_token", refreshToken, cookieOption);
 
       return res.json({
         ok: true,
@@ -109,19 +101,9 @@ class AuthController {
       });
 
       // generate cookies
-      res.cookie("access_token", accessToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
+      res.cookie("access_token", accessToken, cookieOption);
 
-      res.cookie("refresh_token", refreshToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
+      res.cookie("refresh_token", refreshToken, cookieOption);
 
       return res.json({
         ok: true,
@@ -145,7 +127,7 @@ class AuthController {
       let { refresh_token } = req.cookies;
 
       if (!refresh_token)
-        return next(HttpError.notFound("Jwt token not found"));
+        return next(HttpError.unauthorized("Jwt token not found"));
 
       let payload: IJWT | null = null;
       // validate the refresh token
@@ -195,19 +177,9 @@ class AuthController {
       });
 
       // generate cookies
-      res.cookie("access_token", accessToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
+      res.cookie("access_token", accessToken, cookieOption);
 
-      res.cookie("refresh_token", refreshToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
+      res.cookie("refresh_token", refreshToken, cookieOption);
 
       return res.json({
         ok: true,
