@@ -5,15 +5,7 @@ interface IProps {
 }
 
 const X: FC<IProps> = ({ fontSize }) => {
-  return (
-    <div
-      className={`text-[${
-        fontSize ? fontSize : "6rem"
-      }] font-bold text-secondary`}
-    >
-      X
-    </div>
-  );
+  return <div className="text-[5rem] font-bold text-secondary">X</div>;
 };
 
 export default X;

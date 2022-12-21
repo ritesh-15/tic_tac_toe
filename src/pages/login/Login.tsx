@@ -5,6 +5,9 @@ import { Button, FormField } from "../../components";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import { loginApi } from "../../api/auth";
+import IUserRes from "../../interfaces/auth/IUserRes";
+import useUser from "../../app/slices/user/useUser";
+import useMessage from "../../app/slices/message/useMessage";
 interface ILogin {
   password: string;
   username: string;
@@ -16,14 +19,17 @@ const useLogin = () => {
     username: "",
   };
 
+  const { newMessage } = useMessage();
+  const { setUserState } = useUser();
+
   const loginMutation = useMutation(loginApi, {
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (data: IUserRes) => {
+      setUserState(data.user);
+      newMessage("Login successfully!");
     },
-    onError: (error, d, c) => {
+    onError: (error) => {
       // @ts-ignore
-      console.log(error.response.data);
-      // TODO handle error
+      newMessage(error.response.data.message, true);
     },
   });
 
@@ -35,11 +41,12 @@ const useLogin = () => {
     validationSchema: loginSchema,
   });
 
-  return { values, handleChange, handleSubmit, errors };
+  return { values, handleChange, handleSubmit, errors, loginMutation };
 };
 
 const Login = () => {
-  const { values, handleChange, handleSubmit, errors } = useLogin();
+  const { values, handleChange, handleSubmit, errors, loginMutation } =
+    useLogin();
 
   return (
     <section className="min-h-screen flex flex-col justify-around pb-4">
@@ -78,7 +85,12 @@ const Login = () => {
             error={errors.password}
           />
         </div>
-        <Button type="submit" label="Login" className="bg-primary text-white" />
+        <Button
+          disabled={loginMutation.isLoading}
+          type="submit"
+          label="Login"
+          className="bg-primary text-white"
+        />
       </form>
       <div className="mt-4 flex items-center text-sm font-light">
         <p>Dont have account yet?, let's create one</p>

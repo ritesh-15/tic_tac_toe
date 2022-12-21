@@ -11,9 +11,10 @@ interface IProps {
 
 const useCell = (grid: IGrid) => {
   const move = (row: number, col: number) => {
+    const newBoard = [...grid];
     const pos = grid[row][col];
     if (pos == "" || pos == null) {
-      grid[row][col] = "X";
+      newBoard[row][col] = "X";
     }
     // TODO: handle move logic
   };

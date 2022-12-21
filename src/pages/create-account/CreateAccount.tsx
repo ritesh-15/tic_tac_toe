@@ -3,6 +3,10 @@ import { MdKeyboardArrowLeft } from "react-icons/md";
 import { Button, FormField } from "../../components";
 import { createAccountSchema } from "../../validation/authenticationSchema";
 import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import { registerApi } from "../../api/auth";
+import useMessage from "../../app/slices/message/useMessage";
+import useUser from "../../app/slices/user/useUser";
 
 interface ICreateAccount {
   name: string;
@@ -18,19 +22,34 @@ export const useCreateAccount = () => {
     password: "",
     username: "",
   };
+  const { newMessage } = useMessage();
+  const { setUserState } = useUser();
+
+  const registerMutation = useMutation(registerApi, {
+    onSuccess: (data) => {
+      newMessage("Account created successfully!");
+      setUserState(data.user);
+    },
+    onError: (data) => {
+      // @ts-ignore
+      newMessage(data.response.data.message, true);
+    },
+  });
+
   const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues,
     onSubmit: (values) => {
-      // TODO handle create account logic
+      registerMutation.mutate(values);
     },
     validationSchema: createAccountSchema,
   });
 
-  return { values, handleChange, handleSubmit, errors };
+  return { values, handleChange, handleSubmit, errors, registerMutation };
 };
 
 const CreateAccount = () => {
-  const { values, handleChange, handleSubmit, errors } = useCreateAccount();
+  const { values, handleChange, handleSubmit, errors, registerMutation } =
+    useCreateAccount();
 
   return (
     <section className="min-h-screen flex flex-col justify-around pb-4">
@@ -87,6 +106,7 @@ const CreateAccount = () => {
             type="submit"
             label="Register"
             className="bg-primary text-white"
+            disabled={registerMutation.isLoading}
           />
         </form>
         <div className="mt-4 flex items-center text-sm font-light">

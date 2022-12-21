@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { Button, FormField } from "../../components";
 import { useFormik } from "formik";
 import { newGameSchema } from "../../validation/gameSchema";
+import { useMutation, useQueryClient } from "react-query";
+import { newGameApi } from "../../api/game";
+import useMessage from "../../app/slices/message/useMessage";
 
 interface INewGame {
   email: string;
@@ -13,19 +16,36 @@ const useNewGame = () => {
     email: "",
   };
 
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { newMessage } = useMessage();
+
+  const newGameMutation = useMutation(newGameApi, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("games");
+      newMessage("New game created successfully!");
+      navigate("/home");
+    },
+    onError: (err) => {
+      // @ts-ignore
+      newMessage(err.response.data.message, true);
+    },
+  });
+
   const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues,
     onSubmit: (values) => {
-      // TODO handle new game logic
+      newGameMutation.mutate(values);
     },
     validationSchema: newGameSchema,
   });
 
-  return { values, handleChange, handleSubmit, errors };
+  return { values, handleChange, handleSubmit, errors, newGameMutation };
 };
 
 const NewGame = () => {
-  const { values, handleChange, handleSubmit, errors } = useNewGame();
+  const { values, handleChange, handleSubmit, errors, newGameMutation } =
+    useNewGame();
 
   return (
     <section className="min-h-screen flex flex-col justify-around pb-4">
@@ -53,6 +73,7 @@ const NewGame = () => {
         />
 
         <Button
+          disabled={newGameMutation.isLoading}
           type="submit"
           label="Start game"
           className="bg-primary text-white"

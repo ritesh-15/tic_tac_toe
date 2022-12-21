@@ -5,14 +5,17 @@ import { Provider } from "react-redux";
 import queryClient from "./api/query_client";
 import App from "./App";
 import { store } from "./app/store";
+import SocketContextProvider from "./context/socket_context";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <SocketContextProvider>
+          <App />
+        </SocketContextProvider>
       </QueryClientProvider>
     </Provider>
-  </React.StrictMode>
+  </>
 );
