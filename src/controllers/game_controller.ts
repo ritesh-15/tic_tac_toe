@@ -116,8 +116,6 @@ class GameController {
         winnerId: winner,
       });
 
-      console.log(updatedGame);
-
       return res.json({ ok: true, game: updatedGame });
     } catch (err) {
       // @ts-ignore

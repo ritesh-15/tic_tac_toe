@@ -37,7 +37,7 @@ class GameService {
           },
         },
         winner: {
-          select: { id: true, email: true },
+          select: { id: true, email: true, name: true },
         },
         board: true,
         isFinished: true,
@@ -68,7 +68,7 @@ class GameService {
           },
         },
         winner: {
-          select: { id: true, email: true },
+          select: { id: true, email: true, name: true },
         },
         board: true,
         isFinished: true,
@@ -118,7 +118,7 @@ class GameService {
           },
         },
         winner: {
-          select: { id: true, email: true },
+          select: { id: true, email: true, name: true },
         },
         board: true,
         isFinished: true,
