@@ -11,6 +11,7 @@ interface IProps {
 
 const Game: FC<IProps> = ({ game }) => {
   const { user } = useUser();
+  const { isFinished, isOpponentTurn } = game;
 
   return (
     <div className="bg-white shadow-lg py-3 px-2 rounded-md">
@@ -19,12 +20,22 @@ const Game: FC<IProps> = ({ game }) => {
         {game.creator.id === user.id ? game.opponent.name : game.creator.name}
       </h1>
       <p className="mt-2 font-light">
-        Tanmay just made their move! It’s your turn to play now.
+        {isFinished
+          ? game.winner === null || game.winner === "null"
+            ? "It's Draw!"
+            : game.winner.id === user.id
+            ? "You won!"
+            : "You lost!"
+          : isOpponentTurn
+          ? `${game?.creator.name} has played his move, it your time to play the move!`
+          : game.creator.id === user.id
+          ? `${game?.opponent.name} has played his move, it your time to play the move!`
+          : "Game is started waiting to play!"}
       </p>
       <small>{moment(game.createdAt).format("DD MMMM YYYY, hh:mm  a")}</small>
       <Link to={`/game/${game.id}`}>
         <Button
-          type="submit"
+          type="button"
           label="View game"
           className="bg-primary text-white mt-2"
         />

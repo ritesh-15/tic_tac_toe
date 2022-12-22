@@ -106,7 +106,7 @@ const CreateAccount = () => {
             type="submit"
             label="Register"
             className="bg-primary text-white"
-            disabled={registerMutation.isLoading}
+            isLoading={registerMutation.isLoading}
           />
         </form>
         <div className="mt-4 flex items-center text-sm font-light">

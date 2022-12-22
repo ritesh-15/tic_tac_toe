@@ -9,9 +9,7 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -26,6 +24,7 @@ api.interceptors.response.use(
       });
       return api.request(originalRequest);
     }
+
     throw error;
   }
 );

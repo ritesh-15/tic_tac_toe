@@ -5,6 +5,7 @@ export interface IGame {
   turn: Turn;
   board: Array<Array<string | null>>;
   isFinished: boolean;
+  isOpponentTurn: boolean;
   createdAt: string;
   id: string;
 }

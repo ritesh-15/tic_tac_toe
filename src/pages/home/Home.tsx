@@ -1,7 +1,7 @@
 import { Button, Game, GameNotFound } from "../../components";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQueries, useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { logoutApi } from "../../api/auth";
 import useUser from "../../app/slices/user/useUser";
 import { gamesApi } from "../../api/game";
@@ -37,7 +37,6 @@ const useHome = () => {
   });
 
   const logout = () => {
-    console.log("Logout");
     logoutMutation.mutate();
   };
 

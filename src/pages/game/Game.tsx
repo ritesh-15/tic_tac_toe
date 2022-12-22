@@ -1,9 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useState, useContext, useEffect } from "react";
-import { Board, Button, O, X } from "../../components";
-import { useMutation, useQuery } from "react-query";
-import { IUpdateGame, singleGameApi, updaateGameApi } from "../../api/game";
+import { Board, Button, Loading, O, X } from "../../components";
+import { singleGameApi } from "../../api/game";
 import useMessage from "../../app/slices/message/useMessage";
 import { IGame } from "../../interfaces/game/IGame";
 import useUser from "../../app/slices/user/useUser";
@@ -12,8 +11,8 @@ import { SocketContext } from "../../context/socket_context";
 export type IGrid = Array<Array<string | null>>;
 
 const useGame = () => {
-  const router = useParams();
   const { socket } = useContext(SocketContext);
+  const router = useParams();
   const { user } = useUser();
   const { newMessage } = useMessage();
 
@@ -27,21 +26,32 @@ const useGame = () => {
   const [symbol, setSymbol] = useState<"X" | "O">("X");
   const [game, setGame] = useState<IGame | null>(null);
   const [gameResult, setGameResult] = useState<string>();
+  const [loading, setLoading] = useState(false);
 
-  const emitJoinGame = () => {
+  // emit join game event
+  const emitJoinGameEvent = () => {
     if (socket) {
       socket.emit("join_game", router.id);
     }
   };
 
+  // fetch the game details
   useEffect(() => {
+    if (!router.id) return;
     (async () => {
+      setLoading(true);
       try {
         const data = await singleGameApi(router.id!!);
+
         setGame(data.game);
         setBoard(data.game.board);
         setSymbol(data.game.creator.id === user.id ? "X" : "O");
-        setIsPlayerTurn(data.game.creator.id === user.id);
+
+        if (data.game.isOpponentTurn && data.game.opponent.id === user.id)
+          setIsPlayerTurn(true);
+        else if (!data.game.isOpponentTurn && data.game.creator.id === user.id)
+          setIsPlayerTurn(true);
+        else setIsPlayerTurn(false);
 
         if (data.game.isFinished) {
           setGameResult(
@@ -56,47 +66,15 @@ const useGame = () => {
         // @ts-ignore
         newMessage(err.response.data.message, true);
       }
+
+      setLoading(false);
     })();
   }, [router.id]);
 
-  const updateGameMutation = useMutation(
-    (data: IUpdateGame) => updaateGameApi(router.id!!, data),
-    {
-      onSuccess: (data) => {
-        setGame(data.game);
-      },
-      onError: (err) => {
-        // @ts-ignore
-        newMessage(err.response.data.message, true);
-      },
-    }
-  );
-
-  // listen for game win event
-  const listenGameWin = () => {
-    socket?.on("game_win", (game) => {
-      updateGameMutation.mutate({
-        board: game.board,
-        isFinished: true,
-        isOpponentTurn: false,
-        winnerId: game.winner ? game.winner.id : null,
-      });
-
-      if (game.winner === null) {
-        setGameResult("Match is draw!");
-        return;
-      }
-
-      setGameResult(`${game.winner.name} has won the game 🥳🥳`);
-    });
-  };
-
   useEffect(() => {
-    emitJoinGame();
-    listenGameWin();
-
+    emitJoinGameEvent();
     return () => {
-      socket?.off("game_win");
+      socket?.emit("leave_game");
     };
   }, []);
 
@@ -106,9 +84,10 @@ const useGame = () => {
     user,
     symbol,
     isPlayerTurn,
-    setIsPlayerTurn,
     gameResult,
+    setIsPlayerTurn,
     setGameResult,
+    loading,
   };
 };
 
@@ -121,7 +100,12 @@ const Game = () => {
     isPlayerTurn,
     gameResult,
     setGameResult,
+    loading,
   } = useGame();
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <section className="min-h-screen flex flex-col justify-around pb-4">
@@ -163,18 +147,14 @@ const Game = () => {
         </div>
       )}
 
-      {gameResult ? (
-        <Button
-          type="submit"
-          label="Start another game!"
-          className="bg-primary text-white mt-8"
-        />
-      ) : (
-        <Button
-          type="submit"
-          label="Submit!"
-          className="bg-primary text-white mt-8"
-        />
+      {gameResult && (
+        <Link to="/new-game">
+          <Button
+            type="submit"
+            label="Start another game!"
+            className="bg-primary text-white mt-8"
+          />
+        </Link>
       )}
     </section>
   );

@@ -8,7 +8,7 @@ export interface IUpdateGame {
   board?: Array<Array<string | null>>;
   isOpponentTurn?: boolean;
   isFinished?: boolean;
-  winnerId?: string;
+  winner?: string | null;
 }
 
 export const newGameApi = async (data: INewGame) => {

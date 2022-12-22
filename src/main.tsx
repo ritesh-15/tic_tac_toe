@@ -7,6 +7,7 @@ import App from "./App";
 import { store } from "./app/store";
 import SocketContextProvider from "./context/socket_context";
 import "./index.css";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <SocketContextProvider>
           <App />
         </SocketContextProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Provider>
   </>

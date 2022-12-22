@@ -8,6 +8,7 @@ import { loginApi } from "../../api/auth";
 import IUserRes from "../../interfaces/auth/IUserRes";
 import useUser from "../../app/slices/user/useUser";
 import useMessage from "../../app/slices/message/useMessage";
+import { useEffect } from "react";
 interface ILogin {
   password: string;
   username: string;
@@ -24,10 +25,12 @@ const useLogin = () => {
 
   const loginMutation = useMutation(loginApi, {
     onSuccess: (data: IUserRes) => {
+      console.log(data);
       setUserState(data.user);
       newMessage("Login successfully!");
     },
     onError: (error) => {
+      console.log(error);
       // @ts-ignore
       newMessage(error.response.data.message, true);
     },
@@ -40,6 +43,10 @@ const useLogin = () => {
     },
     validationSchema: loginSchema,
   });
+
+  useEffect(() => {
+    console.log(loginMutation.isLoading);
+  }, [loginMutation]);
 
   return { values, handleChange, handleSubmit, errors, loginMutation };
 };
@@ -86,7 +93,7 @@ const Login = () => {
           />
         </div>
         <Button
-          disabled={loginMutation.isLoading}
+          isLoading={loginMutation.isLoading}
           type="submit"
           label="Login"
           className="bg-primary text-white"

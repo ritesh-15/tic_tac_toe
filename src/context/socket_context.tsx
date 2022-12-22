@@ -17,6 +17,7 @@ const SocketContextProvider = ({ children }: IProps) => {
   useEffect(() => {
     const connection = io(import.meta.env.VITE_SERVER_URL);
     setSocket(connection);
+    console.log("Socket connection established!");
     return () => {
       connection.disconnect();
     };

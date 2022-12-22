@@ -73,7 +73,7 @@ const NewGame = () => {
         />
 
         <Button
-          disabled={newGameMutation.isLoading}
+          isLoading={newGameMutation.isLoading}
           type="submit"
           label="Start game"
           className="bg-primary text-white"
