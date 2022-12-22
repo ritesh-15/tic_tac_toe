@@ -20,6 +20,7 @@ class GameService {
         creatorId,
         opponentId,
         board,
+        winnerId: null,
       },
       select: {
         creator: {
