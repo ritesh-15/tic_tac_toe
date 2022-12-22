@@ -38,7 +38,7 @@ model Game {
   opponentId     String   @db.ObjectId
   opponent       User     @relation(fields: [opponentId], references: [id], name: "opponent")
   board          Json
-  winnerId       String?  @default("") @db.ObjectId
+  winnerId       String?  @default("null") @db.ObjectId
   winner         User?    @relation(fields: [winnerId], references: [id], name: "winner")
   isFinished     Boolean  @default(false)
   isOpponentTurn Boolean  @default(false)
