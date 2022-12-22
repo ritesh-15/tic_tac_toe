@@ -48,7 +48,7 @@ class AuthController {
 
       res.cookie("refresh_token", refreshToken, cookieOption);
 
-      return res.json({
+      return res.status(200).json({
         ok: true,
         user: new UserDto(user),
         message: "Logged in successfully!",
@@ -56,7 +56,7 @@ class AuthController {
     } catch (err) {
       // @ts-ignore
       logger.error(err);
-      next(HttpError.internalServerError());
+      return next(HttpError.internalServerError());
     }
   }
 
@@ -111,8 +111,8 @@ class AuthController {
         message: "Account created successfully!",
       });
     } catch (err) {
-      next(HttpError.internalServerError());
       logger.error(err);
+      return next(HttpError.internalServerError());
     }
   }
 
@@ -181,14 +181,14 @@ class AuthController {
 
       res.cookie("refresh_token", refreshToken, cookieOption);
 
-      return res.json({
+      return res.status(200).json({
         ok: true,
         message: "Refreshed successfully!",
       });
     } catch (err) {
       // @ts-ignore
       logger.error(err);
-      next(HttpError.internalServerError());
+      return next(HttpError.internalServerError());
     }
   }
 
@@ -199,7 +199,7 @@ class AuthController {
    */
   static async me(req: Request, res: Response, next: NextFunction) {
     try {
-      return res.json({
+      return res.status(200).json({
         ok: true,
         message: "Feteched successfully!",
         user: req.user,

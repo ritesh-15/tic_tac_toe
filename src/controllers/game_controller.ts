@@ -8,7 +8,7 @@ class GameController {
   static async myGames(req: Request, res: Response, next: NextFunction) {
     try {
       const games = await GameService.getAllGames(req.user.id);
-      return res.json({ ok: true, games });
+      return res.status(200).json({ ok: true, games });
     } catch (error) {
       // @ts-ignore
       logger.log(error);
@@ -87,7 +87,7 @@ class GameController {
 
       if (!game) return next(HttpError.badRequest("Game not found"));
 
-      return res.json({
+      return res.status(200).json({
         ok: true,
         game,
       });
@@ -116,7 +116,7 @@ class GameController {
         winnerId: winner,
       });
 
-      return res.json({ ok: true, game: updatedGame });
+      return res.status(200).json({ ok: true, game: updatedGame });
     } catch (err) {
       // @ts-ignore
       logger.error(err.message);

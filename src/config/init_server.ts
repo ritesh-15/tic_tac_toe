@@ -11,21 +11,19 @@ import { authRouter, gameRouter } from "../routes";
 
 export const initServer = (app: Application) => {
   // middlewares
+  app.use(json({ limit: "100mb" }));
   app.use(cookieParser());
   app.use(cors(corsOptions));
-  app.use(json({ limit: "100mb" }));
   app.use(helmet());
   app.use(morgan("dev"));
 
-  app.use("/api", apiLimiter);
-
   // routes
   app.use("/api/auth", authRateLimiter, authRouter);
-  app.use("/api/game", gameRouter);
+  app.use("/api/game", apiLimiter, gameRouter);
 
   // handle the unplemented route
   app.use((req: Request, res: Response, next: NextFunction) => {
-    next(
+    return next(
       HttpError.notImplemented("The route your looking for is not implemented!")
     );
   });

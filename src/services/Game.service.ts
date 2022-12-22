@@ -51,7 +51,12 @@ class GameService {
   static updateGame(id: string, data: IUpdateGame) {
     return Prisma.client.game.update({
       where: { id },
-      data,
+      data: {
+        winnerId: data.winnerId,
+        board: data.board,
+        isFinished: data.isFinished,
+        isOpponentTurn: data.isOpponentTurn,
+      },
       select: {
         creator: {
           select: {
