@@ -75,7 +75,7 @@ const useBoard = ({ game, setIsPlayerTurn, symbol, setGameResult }: IProps) => {
       socket.emit("game_board_updated", {
         gameId: game.id,
         board,
-        isOpponentTurn: game.creator.id === user.id ? true : false,
+        isOpponentTurn: game.creator.id === user?.id ? true : false,
       });
 
       const [currentPlayer, otherPlayer] = checkBoardStatus(board, symbol);
@@ -244,7 +244,7 @@ const Board: React.FC<IProps> = (props) => {
             label={
               isPlayerTurn
                 ? "Submit!"
-                : game?.creator.id === user.id
+                : game?.creator.id === user?.id
                 ? `waiting for ${game?.opponent.name} move`
                 : `waiting for ${game?.creator.name} move`
             }

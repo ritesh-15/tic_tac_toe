@@ -25,12 +25,10 @@ const useLogin = () => {
 
   const loginMutation = useMutation(loginApi, {
     onSuccess: (data: IUserRes) => {
-      console.log(data);
       setUserState(data.user);
       newMessage("Login successfully!");
     },
     onError: (error) => {
-      console.log(error);
       // @ts-ignore
       newMessage(error.response.data.message, true);
     },
@@ -43,10 +41,6 @@ const useLogin = () => {
     },
     validationSchema: loginSchema,
   });
-
-  useEffect(() => {
-    console.log(loginMutation.isLoading);
-  }, [loginMutation]);
 
   return { values, handleChange, handleSubmit, errors, loginMutation };
 };

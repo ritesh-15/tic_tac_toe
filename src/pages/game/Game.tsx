@@ -45,19 +45,19 @@ const useGame = () => {
 
         setGame(data.game);
         setBoard(data.game.board);
-        setSymbol(data.game.creator.id === user.id ? "X" : "O");
+        setSymbol(data.game.creator.id === user?.id ? "X" : "O");
 
-        if (data.game.isOpponentTurn && data.game.opponent.id === user.id)
+        if (data.game.isOpponentTurn && data.game.opponent.id === user?.id)
           setIsPlayerTurn(true);
-        else if (!data.game.isOpponentTurn && data.game.creator.id === user.id)
+        else if (!data.game.isOpponentTurn && data.game.creator.id === user?.id)
           setIsPlayerTurn(true);
         else setIsPlayerTurn(false);
 
         if (data.game.isFinished) {
           setGameResult(
             data.game.winner
-              ? data.game.winner.id === user.id
-                ? `${user.name} has won the game 🥳🥳`
+              ? data.game.winner.id === user?.id
+                ? `${user?.name} has won the game 🥳🥳`
                 : `${data.game.winner.name} has won the game 🥳🥳`
               : "Match draw!"
           );
@@ -115,7 +115,7 @@ const Game = () => {
         </Link>
         <h1 className="font-bold text-3xl">
           Game with{" "}
-          {game?.creator.id === user.id
+          {game?.creator.id === user?.id
             ? game?.opponent.name
             : game?.creator.name}
         </h1>
@@ -128,7 +128,7 @@ const Game = () => {
             ? gameResult
             : isPlayerTurn
             ? "Your move"
-            : game?.creator.id === user.id
+            : game?.creator.id === user?.id
             ? `waiting for ${game?.opponent.name} move`
             : `waiting for ${game?.creator.name} move`}
         </div>

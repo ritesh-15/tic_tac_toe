@@ -17,18 +17,18 @@ const Game: FC<IProps> = ({ game }) => {
     <div className="bg-white shadow-lg py-3 px-2 rounded-md">
       <h1 className="font-bold">
         Game with{" "}
-        {game.creator.id === user.id ? game.opponent.name : game.creator.name}
+        {game.creator.id === user?.id ? game.opponent.name : game.creator.name}
       </h1>
       <p className="mt-2 font-light">
         {isFinished
           ? game.winner === null || game.winner === "null"
             ? "It's Draw!"
-            : game.winner.id === user.id
+            : game.winner.id === user?.id
             ? "You won!"
             : "You lost!"
           : isOpponentTurn
           ? `${game?.creator.name} has played his move, it your time to play the move!`
-          : game.creator.id === user.id
+          : game.creator.id === user?.id
           ? `${game?.opponent.name} has played his move, it your time to play the move!`
           : "Game is started waiting to play!"}
       </p>
