@@ -26,7 +26,6 @@ const socketConnection = (httpServer: http.Server) => {
 
       // listen for game win event
       socket.on("game_win", (game) => {
-        console.log(game);
         socket.to(gameId).emit("game_win", game);
       });
 

@@ -59,6 +59,8 @@ class GameController {
         [null, null, null],
       ];
 
+      console.log(req.body);
+
       const game = await GameService.create({
         creatorId: req.user.id,
         opponentId: opponent.id,
