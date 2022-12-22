@@ -12,9 +12,16 @@ interface IProps {
   isPlayerTurn: boolean;
   setIsPlayerTurn(value: boolean): void;
   isFinished: boolean;
+  setGameResult(value: string): void;
 }
 
-const useBoard = ({ game, isPlayerTurn, setIsPlayerTurn, symbol }: IProps) => {
+const useBoard = ({
+  game,
+  isPlayerTurn,
+  setIsPlayerTurn,
+  symbol,
+  setGameResult,
+}: IProps) => {
   const { socket } = useContext(SocketContext);
   const [board, setBoard] = useState<IGrid>(game.board);
   const { user } = useUser();
@@ -40,12 +47,16 @@ const useBoard = ({ game, isPlayerTurn, setIsPlayerTurn, symbol }: IProps) => {
         winner: null,
         board,
       });
+
+      setGameResult("Match is draw!");
     } else if (currentPlayer && !otherPlayer) {
       // current player won the game
       socket?.emit("game_win", {
         winner: user,
         board,
       });
+
+      setGameResult("You win!");
     }
 
     setIsPlayerTurn(false);
@@ -127,12 +138,14 @@ const Board: React.FC<IProps> = ({
   setIsPlayerTurn,
   symbol,
   isFinished,
+  setGameResult,
 }) => {
   const { move, board } = useBoard({
     game,
     isPlayerTurn,
     setIsPlayerTurn,
     symbol,
+    setGameResult,
     isFinished,
   });
 

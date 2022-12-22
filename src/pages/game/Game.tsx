@@ -15,6 +15,7 @@ const useGame = () => {
   const router = useParams();
   const { socket } = useContext(SocketContext);
   const { user } = useUser();
+  const { newMessage } = useMessage();
 
   const [board, setBoard] = useState<IGrid>([
     [null, null, null],
@@ -27,32 +28,36 @@ const useGame = () => {
   const [game, setGame] = useState<IGame | null>(null);
   const [gameResult, setGameResult] = useState<string>();
 
-  const { newMessage } = useMessage();
-
   const emitJoinGame = () => {
     if (socket) {
       socket.emit("join_game", router.id);
     }
   };
 
-  const { isLoading } = useQuery(
-    "single-game",
-    () => singleGameApi(router.id!!),
-    {
-      onSuccess: (data) => {
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await singleGameApi(router.id!!);
         setGame(data.game);
         setBoard(data.game.board);
         setSymbol(data.game.creator.id === user.id ? "X" : "O");
         setIsPlayerTurn(data.game.creator.id === user.id);
-      },
-      onError: (err) => {
+
+        if (data.game.isFinished) {
+          setGameResult(
+            data.game.winner
+              ? data.game.winner.id === user.id
+                ? `${user.name} has won the game 🥳🥳`
+                : `${data.game.winner.name} has won the game 🥳🥳`
+              : "Match draw!"
+          );
+        }
+      } catch (err) {
         // @ts-ignore
-        newMessage(error.response.data.message, true);
-      },
-      staleTime: Infinity,
-      cacheTime: Infinity,
-    }
-  );
+        newMessage(err.response.data.message, true);
+      }
+    })();
+  }, [router.id]);
 
   const updateGameMutation = useMutation(
     (data: IUpdateGame) => updaateGameApi(router.id!!, data),
@@ -62,7 +67,7 @@ const useGame = () => {
       },
       onError: (err) => {
         // @ts-ignore
-        newMessage(error.response.data.message, true);
+        newMessage(err.response.data.message, true);
       },
     }
   );
@@ -78,11 +83,11 @@ const useGame = () => {
       });
 
       if (game.winner === null) {
-        setGameResult("Match is drawn!");
+        setGameResult("Match is draw!");
         return;
       }
 
-      setGameResult(`${game.winner.name} is won the game 🥳🥳`);
+      setGameResult(`${game.winner.name} has won the game 🥳🥳`);
     });
   };
 
@@ -103,12 +108,20 @@ const useGame = () => {
     isPlayerTurn,
     setIsPlayerTurn,
     gameResult,
+    setGameResult,
   };
 };
 
 const Game = () => {
-  const { setIsPlayerTurn, game, user, symbol, isPlayerTurn, gameResult } =
-    useGame();
+  const {
+    setIsPlayerTurn,
+    game,
+    user,
+    symbol,
+    isPlayerTurn,
+    gameResult,
+    setGameResult,
+  } = useGame();
 
   return (
     <section className="min-h-screen flex flex-col justify-around pb-4">
@@ -145,15 +158,24 @@ const Game = () => {
             isPlayerTurn={isPlayerTurn}
             setIsPlayerTurn={setIsPlayerTurn}
             symbol={symbol}
+            setGameResult={setGameResult}
           />
         </div>
       )}
 
-      <Button
-        type="submit"
-        label="Submit!"
-        className="bg-primary text-white mt-8"
-      />
+      {gameResult ? (
+        <Button
+          type="submit"
+          label="Start another game!"
+          className="bg-primary text-white mt-8"
+        />
+      ) : (
+        <Button
+          type="submit"
+          label="Submit!"
+          className="bg-primary text-white mt-8"
+        />
+      )}
     </section>
   );
 };

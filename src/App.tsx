@@ -2,29 +2,31 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import useUser from "./app/slices/user/useUser";
 import { CreateAccount, Game, Home, Login, NewGame, Splash } from "./pages";
 import Protected from "./routes/Protected.routes";
-import { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { infoApi } from "./api/auth";
 import { Loading, Message } from "./components";
 import { SocketContext } from "./context/socket_context";
 
 const App = () => {
-  const { setUserState } = useUser();
-  const [loading, setLoading] = useState(false);
+  const { setUserState, logoutUser } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
 
   useContext(SocketContext);
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
+      setIsLoading(true);
       try {
         const data = await infoApi();
         setUserState(data.user);
-      } catch (error) {}
-      setLoading(false);
+      } catch (err) {
+        logoutUser();
+      }
+      setIsLoading(false);
     })();
   }, []);
 
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <main className="w-[95%] mx-auto max-w-[650px] bg-white relative">
