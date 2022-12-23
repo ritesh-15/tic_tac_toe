@@ -37,7 +37,7 @@ Async tic tac toe is game which build on top of latest trending tech stack. It i
 
 ## Tech Stack
 
-<div class="" style="display:flex;flex-wrap:wrap;alignt-items:center;">
+<div class="" style="display:flex;flex-wrap:wrap;">
 
 <img style="width:100px;object-fit:contain" src="https://cdn-icons-png.flaticon.com/512/5968/5968381.png">
 
