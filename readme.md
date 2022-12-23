@@ -60,12 +60,14 @@ Async tic tac toe is game which build on top of latest trending tech stack. It i
 
 ## Screenshots
 
+<div style="display:flex;flex-wrap:wrap;">
 <img style="width:250px;object-fit:contain;" src="/assets/1.png">
 <img style="width:250px;object-fit:contain;" src="/assets/2.png">
 <img style="width:250px;object-fit:contain;" src="/assets/3.png">
 <img style="width:250px;object-fit:contain;" src="/assets/4.png">
 <img style="width:250px;object-fit:contain;" src="/assets/5.png">
 <img style="width:250px;object-fit:contain;" src="/assets/6.png">
+</div>
 
 # Links
 
