@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import HttpError from "../utils/HttpError";
 import { errorHandler } from "../middlewares";
 import { corsOptions } from "./cors_config";
-import { apiLimiter, authRateLimiter } from "./rate_limit";
+import { apiLimiter } from "./rate_limit";
 import morgan from "morgan";
 import helmet from "helmet";
 import { authRouter, gameRouter } from "../routes";
@@ -18,7 +18,7 @@ export const initServer = (app: Application) => {
   app.use(morgan("dev"));
 
   // routes
-  app.use("/api/auth", authRateLimiter, authRouter);
+  app.use("/api/auth", authRouter);
   app.use("/api/game", apiLimiter, gameRouter);
 
   // handle the unplemented route

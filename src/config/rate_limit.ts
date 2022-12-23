@@ -17,7 +17,7 @@ const apiLimiter = rateLimit({
 });
 
 const authRateLimiter = rateLimit({
-  windowMs: 30 * 60 * 1000,
+  windowMs: 1000 * 60 * 15,
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
