@@ -26,5 +26,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Down the previous running container
         run: docker compose down
+      - name: Pull latest image
+        run: docker compose pull
       - name: Run the docker compose file
         run: docker compose up --build --force-recreate -d
