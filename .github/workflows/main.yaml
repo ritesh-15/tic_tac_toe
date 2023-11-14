@@ -24,5 +24,7 @@ jobs:
     steps:
       - name: Pull the code form github
         uses: actions/checkout@v4
+      - name: Down the previous running container
+        run: docker compose down
       - name: Run the docker compose file
         run: docker compose up --build --force-recreate -d
