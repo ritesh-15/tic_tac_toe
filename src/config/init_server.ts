@@ -20,7 +20,7 @@ export const initServer = (app: Application) => {
   app.get("/health", (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json({
       ok: true,
-      message: "health check ok!",
+      message: "ok this is updated message from health check route 🚀🚀",
     })
   })
 
