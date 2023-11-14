@@ -7,8 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Get the code from github
         uses: actions/checkout@v4
-      - name: Push the docker image to docker hub
+      - name: Login to docker
+        run: docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+      - name: Build image
+        run: docker build -t riteshk15/tic-tac-toe-backend:latest .
+      - name: Push to docker hub
+        run: docker push riteshk15/tic-tac-toe-backend:latest
