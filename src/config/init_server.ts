@@ -21,6 +21,7 @@ export const initServer = (app: Application) => {
     res.status(200).json({
       ok: true,
       message: "ok this is updated message from health check route 🚀🚀",
+      timestamp: Date.now(),
     })
   })
 

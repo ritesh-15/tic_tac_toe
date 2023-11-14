@@ -25,4 +25,4 @@ jobs:
       - name: Pull the code form github
         uses: actions/checkout@v4
       - name: Run the docker compose file
-        run: docker compose up --build --force-recreate -d
+        run: docker compose up --force-recreate -d
