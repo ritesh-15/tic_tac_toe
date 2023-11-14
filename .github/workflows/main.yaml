@@ -22,9 +22,7 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Pull the docker image from docker hub
-        run: docker pull riteshk15/tic-tac-toe-backend:latest
-      - name: Delete old container
-        run: docker rm -f tic-tac-toe-backend-container
-      - name: Run the docker image
-        run: docker run --name tic-tac-toe-backend-container -p 9000:9000 -d riteshk15/tic-tac-toe-backend:latest
+      - name: Pull the code form github
+        uses: actions/checkout@v4
+      - name: Run the docker compose file
+        run: docker compose up --build --force-recreate -d
