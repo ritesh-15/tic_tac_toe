@@ -12,7 +12,7 @@ jobs:
       - name: Get the code from github
         uses: actions/checkout@v4
       - name: Login to docker
-        run: docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build image
         run: docker build -t riteshk15/tic-tac-toe-backend:latest .
       - name: Push to docker hub
