@@ -3,7 +3,7 @@ name: tic-tac-toe backend CI/CD
 on:
   push:
     branches:
-      - backend
+      - feature/backend
 
 jobs:
   build:
