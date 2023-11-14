@@ -1,0 +1,14 @@
+name: tic-tac-toe backend CI/CD
+
+on:
+  push:
+    branches:
+      - backend
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Get the code from github
+        uses: actions/checkout@v4
+      - name: Push the docker image to docker hub

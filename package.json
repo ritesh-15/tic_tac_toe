@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/server.js",
     "dev": "nodemon",
-    "build": "tsc -p ."
+    "build": "npx prisma generate && tsc -p ."
   },
   "keywords": [],
   "author": "",
