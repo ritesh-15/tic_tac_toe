@@ -3,7 +3,7 @@ version: '3'
 services:
   api:
     build: .
-    image: tic-tac-toe/backend
+    image: riteshk15/tic-tac-toe-backend:latest
     ports:
       - "80:9000"
     container_name: tic-tac-toe-container

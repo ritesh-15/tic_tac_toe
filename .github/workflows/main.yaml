@@ -17,3 +17,14 @@ jobs:
         run: docker build -t riteshk15/tic-tac-toe-backend:latest .
       - name: Push to docker hub
         run: docker push riteshk15/tic-tac-toe-backend:latest
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Pull the docker image from docker hub
+        run: docker pull riteshk15/tic-tac-toe-backend:latest
+      - name: Delete old container
+        run: docker kill tic-tac-toe-backend-container
+      - name: Run the docker image
+        run: docker run riteshk15/tic-tac-toe-backend:latest --name tic-tac-toe-backend-container -p 9000:9000 -d
