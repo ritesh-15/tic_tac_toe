@@ -1,14 +1,16 @@
-import express, { Application } from "express";
-import { connection, initServer, logger } from "./config";
-import { PORT } from "./keys";
-import socketConnection from "./socket";
+import express, { Application } from "express"
+import { connection, initServer, logger } from "./config"
+import { PORT, HOSTNAME } from "./keys"
+import socketConnection from "./socket"
+import { Server } from "http"
 
-const app: Application = express();
-initServer(app);
+const app: Application = express()
+const httpServer = new Server(app)
+initServer(app)
 
-const server = app.listen(PORT, async () => {
-  await connection();
-  logger.info(`Server listening on port ${PORT}...`);
-});
+httpServer.listen(PORT, HOSTNAME, undefined, async () => {
+  await connection()
+  logger.info(`Server listening on port ${PORT}...`)
+})
 
-socketConnection(server);
+socketConnection(httpServer)

@@ -1,12 +1,14 @@
-import { config } from "dotenv";
-config();
+import { config } from "dotenv"
+config()
 
-export const PORT: string = process.env.PORT!!;
+export const PORT = +process.env.PORT!!
 
-export const CLIENT_URL: string = process.env.CLIENT_URL!!;
+export const HOSTNAME = process.env.HOSTNAME!!
 
-export const MONGO_URL: string = process.env.MONGO_URL!!;
+export const CLIENT_URL: string = process.env.CLIENT_URL!!
 
-export const ACCESS_TOKEN_SECRET: string = process.env.ACCESS_TOKEN_SECRET!!;
+export const MONGO_URL: string = process.env.MONGO_URL!!
 
-export const REFRESH_TOKEN_SECRET: string = process.env.REFRESH_TOKEN_SECRET!!;
+export const ACCESS_TOKEN_SECRET: string = process.env.ACCESS_TOKEN_SECRET!!
+
+export const REFRESH_TOKEN_SECRET: string = process.env.REFRESH_TOKEN_SECRET!!

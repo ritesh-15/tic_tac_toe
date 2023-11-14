@@ -27,4 +27,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f tic-tac-toe-backend-container
       - name: Run the docker image
-        run: docker run riteshk15/tic-tac-toe-backend:latest --name tic-tac-toe-backend-container -p 9000:9000 -d
+        run: docker run --name tic-tac-toe-backend-container -p 9000:9000 -d riteshk15/tic-tac-toe-backend:latest
